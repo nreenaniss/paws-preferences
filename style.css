@@ -135,18 +135,18 @@ header p {
 
 /* ===== LIKED CATS (CENTERED) ===== */
 #liked-cats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 200px));
+  display: flex;
+  flex-wrap: wrap;        /* wrap if screen too small */
+  justify-content: center; /* center all items horizontally */
   gap: 16px;
   padding: 10px;
-  justify-content: center;  /* center grid row */
-  justify-items: center;    /* center items in columns */
-  max-width: 420px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 #liked-cats img {
-  width: 100%;
+  width: 160px;           /* fixed width for nice look */
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: 22px;
@@ -187,3 +187,4 @@ button:active {
     transform: translateY(0);
   }
 }
+
