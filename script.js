@@ -15,18 +15,34 @@ function createCard(index) {
     `url(https://cataas.com/cat?width=300&height=400&${Date.now()+index})`;
 
   let startX = 0;
+  let isDragging = false;
 
+  // TOUCH (MOBILE)
   card.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
 
   card.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
-    const diff = endX - startX;
+    handleSwipe(endX - startX);
+  });
 
+  // MOUSE (DESKTOP)
+  card.addEventListener("mousedown", e => {
+    startX = e.clientX;
+    isDragging = true;
+  });
+
+  card.addEventListener("mouseup", e => {
+    if (!isDragging) return;
+    isDragging = false;
+    handleSwipe(e.clientX - startX);
+  });
+
+  function handleSwipe(diff) {
     if (diff > 80) like(card);
     else if (diff < -80) dislike(card);
-  });
+  }
 
   return card;
 }
@@ -69,3 +85,4 @@ function showResult() {
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
+
