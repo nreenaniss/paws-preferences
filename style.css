@@ -9,9 +9,10 @@ html, body {
 body {
   margin: 0;
   font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #f6bfd4; /* fallback pink */
   background: radial-gradient(circle at top, #ffe8f0, #f6bfd4);
   text-align: center;
-  min-height: 100vh;
+  min-height: 100%;
   color: #333;
 }
 
@@ -187,4 +188,5 @@ button:active {
     transform: translateY(0);
   }
 }
+
 
