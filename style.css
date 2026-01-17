@@ -1,19 +1,25 @@
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
 }
 
 html, body {
   height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  text-align: center;
+  color: #333;
 }
 
+/* ===== BACKGROUND ===== */
 body {
-  margin: 0;
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  background-color: #f6bfd4; /* fallback pink */
-  background: radial-gradient(circle at top, #ffe8f0, #f6bfd4);
-  text-align: center;
-  min-height: 100%;
-  color: #333;
+  /* Smooth radial gradient top → bottom, scroll-friendly */
+  background: radial-gradient(circle at top, #ffe8f0 0%, #f6bfd4 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 /* ===== HEADER ===== */
@@ -134,11 +140,11 @@ header p {
   margin-bottom: 12px;
 }
 
-/* ===== LIKED CATS (CENTERED) ===== */
+/* ===== LIKED CATS CENTERED ===== */
 #liked-cats {
   display: flex;
-  flex-wrap: wrap;        /* wrap if screen too small */
-  justify-content: center; /* center all items horizontally */
+  flex-wrap: wrap;             /* wrap if screen too small */
+  justify-content: center;      /* center all items horizontally */
   gap: 16px;
   padding: 10px;
   max-width: 100%;
@@ -146,7 +152,7 @@ header p {
 }
 
 #liked-cats img {
-  width: 160px;           /* fixed width for nice look */
+  width: 160px;                /* fixed width */
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
@@ -188,5 +194,3 @@ button:active {
     transform: translateY(0);
   }
 }
-
-
