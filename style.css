@@ -117,7 +117,7 @@ header p {
 #result {
   animation: fadeIn 0.5s ease;
   padding: 16px;
-  margin: 0 auto 40px;
+  margin: 24px auto;
   max-width: 420px;
   background: rgba(255,255,255,0.55);
   border-radius: 26px;
@@ -133,12 +133,16 @@ header p {
   margin-bottom: 12px;
 }
 
-/* ===== LIKED CATS (BIGGER) ===== */
+/* ===== LIKED CATS (CENTERED) ===== */
 #liked-cats {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 200px));
   gap: 16px;
   padding: 10px;
+  justify-content: center;  /* center grid row */
+  justify-items: center;    /* center items in columns */
+  max-width: 420px;
+  margin: 0 auto;
 }
 
 #liked-cats img {
