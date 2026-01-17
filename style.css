@@ -1,4 +1,4 @@
-/* ===== RESET ===== */
+/* ===== GLOBAL ===== */
 * {
   box-sizing: border-box;
 }
@@ -11,15 +11,11 @@ html, body {
   font-family: "Helvetica Neue", Arial, sans-serif;
   text-align: center;
   color: #333;
-}
 
-/* ===== BACKGROUND ===== */
-body {
-  /* Smooth radial gradient top → bottom, scroll-friendly */
+  /* Gradient covers entire content */
   background: radial-gradient(circle at top, #ffe8f0 0%, #f6bfd4 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
-  min-height: 100vh;
 }
 
 /* ===== HEADER ===== */
@@ -123,9 +119,11 @@ header p {
 /* ===== RESULT SECTION ===== */
 #result {
   animation: fadeIn 0.5s ease;
-  padding: 16px;
-  margin: 24px auto;
+  padding: 24px 16px;
+  margin: 40px auto;           /* top & bottom space */
   max-width: 420px;
+  max-height: 80vh;            /* limit height so it doesn't fill viewport */
+  overflow-y: auto;            /* scroll if needed */
   background: rgba(255,255,255,0.55);
   border-radius: 26px;
   box-shadow: 0 15px 30px rgba(0,0,0,0.12);
@@ -140,11 +138,11 @@ header p {
   margin-bottom: 12px;
 }
 
-/* ===== LIKED CATS CENTERED ===== */
+/* ===== LIKED CATS (CENTERED) ===== */
 #liked-cats {
   display: flex;
-  flex-wrap: wrap;             /* wrap if screen too small */
-  justify-content: center;      /* center all items horizontally */
+  flex-wrap: wrap;               /* wrap if screen too small */
+  justify-content: center;       /* center all items horizontally */
   gap: 16px;
   padding: 10px;
   max-width: 100%;
@@ -152,7 +150,7 @@ header p {
 }
 
 #liked-cats img {
-  width: 160px;                /* fixed width */
+  width: 160px;
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
