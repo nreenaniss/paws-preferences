@@ -1,29 +1,26 @@
-/* ===== RESET ===== */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
-/* ===== BODY ===== */
 body {
   background: linear-gradient(180deg, #ffe6ef, #fff0f5);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #333;
 }
 
-/* ===== APP CONTAINER ===== */
+/* App */
 .app {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
   padding: 20px;
 }
 
-/* ===== HEADER ===== */
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -32,178 +29,106 @@ header {
 }
 
 header h1 {
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.3rem;
   color: #ff5a8a;
 }
 
 #progress {
   font-size: 0.9rem;
-  font-weight: 500;
   color: #666;
 }
 
-/* ===== CARD CONTAINER ===== */
-.card-container {
+/* Card container */
+#card-container {
   position: relative;
   height: 520px;
-  margin-top: 10px;
 }
 
-/* ===== CAT CARD ===== */
-.cat-card {
+/* Card */
+.card {
   position: absolute;
-  inset: 0;
+  width: 100%;
+  height: 100%;
   background: white;
-  border-radius: 26px;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
   overflow: hidden;
-  cursor: grab;
-  transition: transform 0.35s ease, opacity 0.35s ease;
+  touch-action: none;
 }
 
-.cat-card img {
+.card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* ===== LIKE / NOPE LABELS ===== */
+/* Like / Nope labels */
 .label {
   position: absolute;
-  top: 24px;
+  top: 20px;
   padding: 10px 18px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  border-radius: 12px;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 10px;
   opacity: 0;
-  transform: rotate(-12deg);
-  pointer-events: none;
 }
 
-.label.like {
+.like {
   left: 20px;
   color: #2ecc71;
   border: 3px solid #2ecc71;
+  transform: rotate(-10deg);
 }
 
-.label.nope {
+.nope {
   right: 20px;
   color: #ff4d6d;
   border: 3px solid #ff4d6d;
-  transform: rotate(12deg);
+  transform: rotate(10deg);
 }
 
-/* ===== BUTTONS ===== */
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 20px;
-}
-
-button {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  border: none;
-  font-size: 1.6rem;
-  cursor: pointer;
-  background: white;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
-}
-
-button.like {
-  color: #2ecc71;
-}
-
-button.nope {
-  color: #ff4d6d;
-}
-
-/* ===== RESULTS SCREEN ===== */
+/* Results */
 #results {
   display: none;
-  animation: fadeIn 0.6s ease forwards;
+  text-align: center;
+  animation: fade 0.4s ease;
 }
 
 #results h2 {
-  text-align: center;
-  font-size: 1.5rem;
   color: #ff5a8a;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
-/* ===== LIKED CATS GRID ===== */
+/* Liked cats */
 #liked-cats {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 20px;
+  display: flex;
   justify-content: center;
-  justify-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-/* ===== RESULT CAT CARD (FIXED CENTERING + SIZE) ===== */
 #liked-cats img {
-  width: 100%;
-  max-width: 260px;   /* ⭐ CRITICAL FIX */
-  aspect-ratio: 3 / 4;
+  width: 260px;
+  height: 340px;
   object-fit: cover;
   border-radius: 22px;
-  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease;
+  box-shadow: 0 16px 35px rgba(0,0,0,0.25);
 }
 
-#liked-cats img:hover {
-  transform: scale(1.04);
-}
-
-/* ===== RESTART BUTTON ===== */
+/* Restart button */
 #restart {
-  display: block;
-  margin: 28px auto 0;
-  padding: 14px 26px;
-  border-radius: 30px;
+  margin-top: 24px;
+  padding: 14px 28px;
   border: none;
-  background: linear-gradient(135deg, #ff5a8a, #ff85a2);
+  border-radius: 30px;
+  background: #ff5a8a;
   color: white;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 12px 25px rgba(255, 90, 138, 0.4);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-#restart:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 35px rgba(255, 90, 138, 0.5);
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== MOBILE TWEAKS ===== */
-@media (max-width: 420px) {
-  .card-container {
-    height: 480px;
-  }
-
-  #liked-cats img {
-    max-width: 230px;
-  }
+/* Animation */
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
