@@ -7,7 +7,7 @@ const likedCatsDiv = document.getElementById("liked-cats");
 let currentIndex = 0;
 let likedCats = [];
 
-// Create a swipe card
+// Create swipe card (POINTER EVENTS)
 function createCard(index) {
   const card = document.createElement("div");
   card.className = "card";
@@ -18,47 +18,27 @@ function createCard(index) {
   let currentX = 0;
   let isDragging = false;
 
-  /* ======================
-     📱 TOUCH (MOBILE)
-  ====================== */
-  card.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-    currentX = startX;
-  });
-
-  card.addEventListener("touchmove", e => {
-    currentX = e.touches[0].clientX;
-  });
-
-  card.addEventListener("touchend", () => {
-    handleSwipe(currentX - startX);
-  });
-
-  /* ======================
-     💻 MOUSE (DESKTOP)
-  ====================== */
-  card.addEventListener("mousedown", e => {
-    e.preventDefault();              // IMPORTANT
+  card.addEventListener("pointerdown", e => {
     startX = e.clientX;
     currentX = startX;
     isDragging = true;
+    card.setPointerCapture(e.pointerId);
   });
 
-  card.addEventListener("mousemove", e => {
+  card.addEventListener("pointermove", e => {
     if (!isDragging) return;
     currentX = e.clientX;
   });
 
-  card.addEventListener("mouseup", () => {
+  card.addEventListener("pointerup", e => {
     if (!isDragging) return;
     isDragging = false;
+    card.releasePointerCapture(e.pointerId);
     handleSwipe(currentX - startX);
   });
 
-  card.addEventListener("mouseleave", () => {
-    if (!isDragging) return;
+  card.addEventListener("pointercancel", () => {
     isDragging = false;
-    handleSwipe(currentX - startX);
   });
 
   function handleSwipe(diff) {
@@ -67,7 +47,6 @@ function createCard(index) {
     } else if (diff < -100) {
       dislike(card);
     }
-    // otherwise do nothing (treat as click)
   }
 
   return card;
@@ -95,7 +74,7 @@ function removeCard(card) {
   }
 }
 
-// Show summary
+// Show result
 function showResult() {
   result.classList.remove("hidden");
   likeCount.textContent = likedCats.length;
@@ -107,8 +86,7 @@ function showResult() {
   });
 }
 
-// Load cards (stacked)
+// Load cards (stack)
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
-
