@@ -2,10 +2,14 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(180deg, #fff0f5, #fde2ea);
+  background: linear-gradient(180deg, #ffe4ec, #f8cdda);
   text-align: center;
 }
 
@@ -21,7 +25,7 @@ header h1 {
 header p {
   margin: 6px 0 0;
   font-size: 14px;
-  color: #777;
+  color: #555;
 }
 
 #card-container {
@@ -38,7 +42,7 @@ header p {
   border-radius: 24px;
   background-size: cover;
   background-position: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
   touch-action: none;
   user-select: none;
 }
@@ -53,20 +57,21 @@ header p {
   font-weight: bold;
   border-radius: 12px;
   opacity: 0;
-  transform: rotate(-10deg);
+  pointer-events: none;
 }
 
 .like {
   left: 20px;
   color: #2ecc71;
   border-color: #2ecc71;
+  transform: rotate(-12deg);
 }
 
 .nope {
   right: 20px;
   color: #e74c3c;
   border-color: #e74c3c;
-  transform: rotate(10deg);
+  transform: rotate(12deg);
 }
 
 #result {
@@ -82,4 +87,3 @@ header p {
   border-radius: 16px;
   margin: 8px;
 }
-
