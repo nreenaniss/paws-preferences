@@ -1,4 +1,5 @@
 const TOTAL_CATS = 10;
+
 const container = document.getElementById("card-container");
 const result = document.getElementById("result");
 const likeCount = document.getElementById("like-count");
@@ -7,92 +8,88 @@ const likedCatsDiv = document.getElementById("liked-cats");
 let currentIndex = 0;
 let likedCats = [];
 
-// Create swipe card (POINTER EVENTS)
 function createCard(index) {
   const card = document.createElement("div");
   card.className = "card";
   card.style.backgroundImage =
-    `url(https://cataas.com/cat?width=300&height=400&${Date.now() + index})`;
+    `url(https://cataas.com/cat?width=300&height=400&${Date.now()+index})`;
+
+  const likeLabel = document.createElement("div");
+  likeLabel.className = "like";
+  likeLabel.textContent = "LIKE";
+
+  const nopeLabel = document.createElement("div");
+  nopeLabel.className = "nope";
+  nopeLabel.textContent = "NOPE";
+
+  card.appendChild(likeLabel);
+  card.appendChild(nopeLabel);
 
   let startX = 0;
   let currentX = 0;
-  let isDragging = false;
+  let dragging = false;
 
   card.addEventListener("pointerdown", e => {
+    dragging = true;
     startX = e.clientX;
-    currentX = startX;
-    isDragging = true;
-    card.style.transition = "none"; // disable snap while dragging
     card.setPointerCapture(e.pointerId);
   });
 
   card.addEventListener("pointermove", e => {
-    if (!isDragging) return;
+    if (!dragging) return;
     currentX = e.clientX;
     const diff = currentX - startX;
 
-    // Move + rotate card
     card.style.transform =
       `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
+
+    likeLabel.style.opacity = diff > 0 ? Math.min(diff / 100, 1) : 0;
+    nopeLabel.style.opacity = diff < 0 ? Math.min(-diff / 100, 1) : 0;
   });
 
-  card.addEventListener("pointerup", e => {
-    if (!isDragging) return;
-    isDragging = false;
-    card.releasePointerCapture(e.pointerId);
-    handleSwipe(currentX - startX);
+  card.addEventListener("pointerup", () => {
+    dragging = false;
+    const diff = currentX - startX;
+
+    if (diff > 120) swipeRight(card);
+    else if (diff < -120) swipeLeft(card);
+    else resetCard(card);
   });
-
-  card.addEventListener("pointercancel", resetCard);
-
-  function handleSwipe(diff) {
-    card.style.transition = "transform 0.3s ease";
-
-    if (diff > 120) {
-      // LIKE animation
-      card.style.transform = "translateX(500px) rotate(30deg)";
-      setTimeout(() => like(card), 300);
-    } else if (diff < -120) {
-      // DISLIKE animation
-      card.style.transform = "translateX(-500px) rotate(-30deg)";
-      setTimeout(() => dislike(card), 300);
-    } else {
-      // Snap back
-      resetCard();
-    }
-  }
-
-  function resetCard() {
-    card.style.transition = "transform 0.3s ease";
-    card.style.transform = "translateX(0) rotate(0)";
-  }
 
   return card;
 }
 
-// Like
-function like(card) {
+function swipeRight(card) {
+  card.style.transform = "translateX(1000px) rotate(30deg)";
+  saveLike(card);
+}
+
+function swipeLeft(card) {
+  card.style.transform = "translateX(-1000px) rotate(-30deg)";
+  removeCard(card);
+}
+
+function resetCard(card) {
+  card.style.transform = "";
+}
+
+function saveLike(card) {
   const img = card.style.backgroundImage.slice(5, -2);
   likedCats.push(img);
   removeCard(card);
 }
 
-// Dislike
-function dislike(card) {
-  removeCard(card);
-}
-
-// Remove card and check end
 function removeCard(card) {
-  card.remove();
-  currentIndex++;
+  setTimeout(() => {
+    card.remove();
+    currentIndex++;
 
-  if (currentIndex === TOTAL_CATS) {
-    showResult();
-  }
+    if (currentIndex === TOTAL_CATS) {
+      showResult();
+    }
+  }, 300);
 }
 
-// Show result
 function showResult() {
   result.classList.remove("hidden");
   likeCount.textContent = likedCats.length;
@@ -104,8 +101,18 @@ function showResult() {
   });
 }
 
-// Load cards (stack)
+// Buttons (desktop support)
+document.getElementById("like-btn").onclick = () => {
+  const card = container.lastElementChild;
+  if (card) swipeRight(card);
+};
+
+document.getElementById("dislike-btn").onclick = () => {
+  const card = container.lastElementChild;
+  if (card) swipeLeft(card);
+};
+
+// Load cards
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
-
