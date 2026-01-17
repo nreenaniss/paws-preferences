@@ -98,6 +98,7 @@ function removeCard(card) {
 function showResult() {
   result.classList.remove("hidden");
   likeCount.textContent = likedCats.length;
+  likedCatsDiv.innerHTML = "";
 
   likedCats.forEach(src => {
     const img = document.createElement("img");
