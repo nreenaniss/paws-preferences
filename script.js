@@ -23,39 +23,51 @@ function createCard(index) {
   ====================== */
   card.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
+    currentX = startX;
   });
 
-  card.addEventListener("touchend", e => {
-    const endX = e.changedTouches[0].clientX;
-    handleSwipe(endX - startX);
+  card.addEventListener("touchmove", e => {
+    currentX = e.touches[0].clientX;
+  });
+
+  card.addEventListener("touchend", () => {
+    handleSwipe(currentX - startX);
   });
 
   /* ======================
      💻 MOUSE (DESKTOP)
   ====================== */
   card.addEventListener("mousedown", e => {
+    e.preventDefault();              // IMPORTANT
     startX = e.clientX;
     currentX = startX;
     isDragging = true;
   });
 
-  document.addEventListener("mousemove", e => {
+  card.addEventListener("mousemove", e => {
     if (!isDragging) return;
     currentX = e.clientX;
   });
 
-  document.addEventListener("mouseup", () => {
+  card.addEventListener("mouseup", () => {
+    if (!isDragging) return;
+    isDragging = false;
+    handleSwipe(currentX - startX);
+  });
+
+  card.addEventListener("mouseleave", () => {
     if (!isDragging) return;
     isDragging = false;
     handleSwipe(currentX - startX);
   });
 
   function handleSwipe(diff) {
-    if (diff > 80) {
+    if (diff > 100) {
       like(card);
-    } else if (diff < -80) {
+    } else if (diff < -100) {
       dislike(card);
     }
+    // otherwise do nothing (treat as click)
   }
 
   return card;
@@ -99,3 +111,4 @@ function showResult() {
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
+
