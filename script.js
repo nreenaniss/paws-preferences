@@ -1,105 +1,92 @@
 const TOTAL_CATS = 10;
-
 const container = document.getElementById("card-container");
 const result = document.getElementById("result");
 const likeCount = document.getElementById("like-count");
 const likedCatsDiv = document.getElementById("liked-cats");
+const progressText = document.getElementById("progress-text");
+const progressFill = document.getElementById("progress-fill");
 
 let currentIndex = 0;
 let likedCats = [];
 
+// Create card
 function createCard(index) {
   const card = document.createElement("div");
   card.className = "card";
-  card.style.backgroundImage =
-    `url(https://cataas.com/cat?width=320&height=440&${Date.now() + index})`;
+  const imgUrl = `https://cataas.com/cat?width=400&height=500&${Date.now()+index}`;
+  card.style.backgroundImage = `url(${imgUrl})`;
 
-  const likeLabel = document.createElement("div");
-  likeLabel.className = "like";
-  likeLabel.textContent = "LIKE";
-
-  const nopeLabel = document.createElement("div");
-  nopeLabel.className = "nope";
-  nopeLabel.textContent = "NOPE";
-
-  card.appendChild(likeLabel);
-  card.appendChild(nopeLabel);
+  const info = document.createElement("div");
+  info.className = "card-info";
+  info.textContent = "Cute Cat 🐾";
+  card.appendChild(info);
 
   let startX = 0;
   let currentX = 0;
   let dragging = false;
 
-  card.addEventListener("pointerdown", e => {
+  const start = x => {
+    startX = x;
     dragging = true;
-    startX = e.clientX;
-    card.setPointerCapture(e.pointerId);
-  });
+    card.style.transition = "none";
+  };
 
-  card.addEventListener("pointermove", e => {
+  const move = x => {
     if (!dragging) return;
+    currentX = x - startX;
+    card.style.transform = `translateX(${currentX}px) rotate(${currentX * 0.05}deg)`;
+  };
 
-    currentX = e.clientX;
-    const diff = currentX - startX;
-
-    card.style.transform =
-      `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
-
-    likeLabel.style.opacity = diff > 0 ? Math.min(diff / 100, 1) : 0;
-    nopeLabel.style.opacity = diff < 0 ? Math.min(-diff / 100, 1) : 0;
-  });
-
-  card.addEventListener("pointerup", () => {
+  const end = () => {
     dragging = false;
-    const diff = currentX - startX;
+    card.style.transition = "transform 0.35s ease";
 
-    if (diff > 120) swipeRight(card);
-    else if (diff < -120) swipeLeft(card);
-    else resetCard(card);
-  });
+    if (currentX > 100) swipe(card, true, imgUrl);
+    else if (currentX < -100) swipe(card, false);
+    else card.style.transform = "translateX(0)";
+  };
+
+  // Touch
+  card.addEventListener("touchstart", e => start(e.touches[0].clientX));
+  card.addEventListener("touchmove", e => move(e.touches[0].clientX));
+  card.addEventListener("touchend", end);
+
+  // Mouse
+  card.addEventListener("mousedown", e => start(e.clientX));
+  window.addEventListener("mousemove", e => move(e.clientX));
+  window.addEventListener("mouseup", end);
 
   return card;
 }
 
-function swipeRight(card) {
-  card.style.transition = "transform 0.4s ease";
-  card.style.transform = "translateX(1000px) rotate(30deg)";
-  saveLike(card);
-}
+// Swipe logic
+function swipe(card, liked, imgUrl) {
+  card.style.transform = `translateX(${liked ? 600 : -600}px) rotate(${liked ? 20 : -20}deg)`;
+  card.style.opacity = 0;
 
-function swipeLeft(card) {
-  card.style.transition = "transform 0.4s ease";
-  card.style.transform = "translateX(-1000px) rotate(-30deg)";
-  removeCard(card);
-}
+  if (liked) likedCats.push(imgUrl);
 
-function resetCard(card) {
-  card.style.transition = "transform 0.3s ease";
-  card.style.transform = "";
-  setTimeout(() => card.style.transition = "", 300);
-}
-
-function saveLike(card) {
-  const img = card.style.backgroundImage.slice(5, -2);
-  likedCats.push(img);
-  removeCard(card);
-}
-
-function removeCard(card) {
   setTimeout(() => {
     card.remove();
     currentIndex++;
-
-    if (currentIndex === TOTAL_CATS) {
-      showResult();
-    }
-  }, 400);
+    updateProgress();
+    if (currentIndex === TOTAL_CATS) showResult();
+  }, 300);
 }
 
+// Progress
+function updateProgress() {
+  progressText.textContent = `${Math.min(currentIndex + 1, TOTAL_CATS)} / ${TOTAL_CATS}`;
+  progressFill.style.width = `${(currentIndex / TOTAL_CATS) * 100}%`;
+}
+
+// Result
 function showResult() {
+  container.classList.add("hidden");
   result.classList.remove("hidden");
   likeCount.textContent = likedCats.length;
-  likedCatsDiv.innerHTML = "";
 
+  likedCatsDiv.innerHTML = "";
   likedCats.forEach(src => {
     const img = document.createElement("img");
     img.src = src;
@@ -107,7 +94,23 @@ function showResult() {
   });
 }
 
-// Load cards (stacked)
-for (let i = TOTAL_CATS - 1; i >= 0; i--) {
-  container.appendChild(createCard(i));
+// Restart
+function restart() {
+  currentIndex = 0;
+  likedCats = [];
+  container.innerHTML = "";
+  result.classList.add("hidden");
+  container.classList.remove("hidden");
+  updateProgress();
+  loadCards();
 }
+
+// Load cards
+function loadCards() {
+  for (let i = TOTAL_CATS - 1; i >= 0; i--) {
+    container.appendChild(createCard(i));
+  }
+}
+
+updateProgress();
+loadCards();
