@@ -12,7 +12,7 @@ function createCard(index) {
   const card = document.createElement("div");
   card.className = "card";
   card.style.backgroundImage =
-    `url(https://cataas.com/cat?width=300&height=400&${Date.now()+index})`;
+    `url(https://cataas.com/cat?width=320&height=440&${Date.now() + index})`;
 
   const likeLabel = document.createElement("div");
   likeLabel.className = "like";
@@ -37,6 +37,7 @@ function createCard(index) {
 
   card.addEventListener("pointermove", e => {
     if (!dragging) return;
+
     currentX = e.clientX;
     const diff = currentX - startX;
 
@@ -70,7 +71,9 @@ function swipeLeft(card) {
 }
 
 function resetCard(card) {
+  card.style.transition = "transform 0.3s ease";
   card.style.transform = "";
+  setTimeout(() => (card.style.transition = ""), 300);
 }
 
 function saveLike(card) {
@@ -100,17 +103,6 @@ function showResult() {
     likedCatsDiv.appendChild(img);
   });
 }
-
-// Buttons (desktop support)
-document.getElementById("like-btn").onclick = () => {
-  const card = container.lastElementChild;
-  if (card) swipeRight(card);
-};
-
-document.getElementById("dislike-btn").onclick = () => {
-  const card = container.lastElementChild;
-  if (card) swipeLeft(card);
-};
 
 // Load cards
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
