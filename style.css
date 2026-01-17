@@ -1,134 +1,185 @@
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", Arial, sans-serif;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
-  background: linear-gradient(180deg, #ffe6ef, #fff0f5);
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: radial-gradient(circle at top, #ffe8f0, #f6bfd4);
+  text-align: center;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #333;
 }
 
-/* App */
-.app {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-}
-
-/* Header */
+/* ===== HEADER ===== */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  margin: 16px auto;
+  padding: 16px;
+  width: 90%;
+  max-width: 360px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 header h1 {
-  font-size: 1.3rem;
-  color: #ff5a8a;
+  margin: 0;
+  font-size: 22px;
 }
 
-#progress {
-  font-size: 0.9rem;
+header p {
+  margin: 6px 0 10px;
+  font-size: 14px;
   color: #666;
 }
 
-/* Card container */
-#card-container {
-  position: relative;
-  height: 520px;
+/* ===== PROGRESS ===== */
+#progress-text {
+  font-size: 14px;
+  margin-bottom: 6px;
 }
 
-/* Card */
+#progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #f3b6c8;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #ff5f96;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+/* ===== CARD STACK ===== */
+#card-container {
+  position: relative;
+  width: 320px;
+  height: 440px;
+  margin: 24px auto;
+}
+
+/* ===== CARD ===== */
 .card {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
-  overflow: hidden;
+  border-radius: 26px;
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.18),
+    inset 0 -90px 90px rgba(0,0,0,0.25);
   touch-action: none;
+  user-select: none;
+  overflow: hidden;
+  transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Like / Nope labels */
+/* ===== LIKE / NOPE LABELS ===== */
 .label {
   position: absolute;
-  top: 20px;
+  top: 28px;
   padding: 10px 18px;
+  border: 3px solid;
   font-size: 22px;
-  font-weight: bold;
-  border-radius: 10px;
+  font-weight: 800;
+  border-radius: 12px;
   opacity: 0;
+  pointer-events: none;
+  background: rgba(255,255,255,0.9);
 }
 
 .like {
   left: 20px;
   color: #2ecc71;
-  border: 3px solid #2ecc71;
+  border-color: #2ecc71;
   transform: rotate(-10deg);
 }
 
 .nope {
   right: 20px;
-  color: #ff4d6d;
-  border: 3px solid #ff4d6d;
+  color: #e74c3c;
+  border-color: #e74c3c;
   transform: rotate(10deg);
 }
 
-/* Results */
-#results {
+/* ===== RESULT SECTION ===== */
+#result {
+  animation: fadeIn 0.5s ease;
+  padding: 16px;
+  margin: 0 auto 40px;
+  max-width: 420px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 26px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+.hidden {
   display: none;
-  text-align: center;
-  animation: fade 0.4s ease;
 }
 
-#results h2 {
-  color: #ff5a8a;
-  margin-bottom: 16px;
+#result h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
 }
 
-/* Liked cats */
+/* ===== LIKED CATS (BIGGER) ===== */
 #liked-cats {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 10px;
 }
 
 #liked-cats img {
-  width: 260px;
-  height: 340px;
+  width: 100%;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: 22px;
-  box-shadow: 0 16px 35px rgba(0,0,0,0.25);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease;
 }
 
-/* Restart button */
-#restart {
-  margin-top: 24px;
-  padding: 14px 28px;
+#liked-cats img:hover {
+  transform: scale(1.04);
+}
+
+/* ===== BUTTON ===== */
+button {
+  margin-top: 20px;
+  padding: 14px 30px;
   border: none;
   border-radius: 30px;
-  background: #ff5a8a;
+  background: linear-gradient(135deg, #ff5f96, #ff85ad);
   color: white;
-  font-size: 1rem;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 12px 25px rgba(255,95,150,0.45);
 }
 
-/* Animation */
-@keyframes fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+button:active {
+  transform: scale(0.95);
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
