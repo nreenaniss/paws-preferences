@@ -2,24 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Paws & Preferences 🐾</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header>
-    <h1>Paws & Preferences</h1>
-    <p>Swipe right if you like the cat 😻</p>
-  </header>
+<header>
+  <h1>Paws & Preferences 🐾</h1>
+  <p>Swipe right if you like the cat, left if not</p>
 
-  <div id="card-container">
-    <div id="result" class="hidden">
-      <h2>You liked <span id="like-count"></span> cats</h2>
-      <div id="liked-cats"></div>
-    </div>
+  <div id="progress-text">1 / 10</div>
+  <div id="progress-bar">
+    <div id="progress-fill"></div>
   </div>
+</header>
 
-  <script src="script.js"></script>
+<main>
+  <div id="card-container"></div>
+
+  <section id="result" class="hidden">
+    <h2>You liked <span id="like-count"></span> cats 💕</h2>
+    <div id="liked-cats"></div>
+    <button onclick="restart()">Restart</button>
+  </section>
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
