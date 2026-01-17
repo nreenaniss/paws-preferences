@@ -61,11 +61,13 @@ function createCard(index) {
 }
 
 function swipeRight(card) {
+  card.style.transition = "transform 0.4s ease";
   card.style.transform = "translateX(1000px) rotate(30deg)";
   saveLike(card);
 }
 
 function swipeLeft(card) {
+  card.style.transition = "transform 0.4s ease";
   card.style.transform = "translateX(-1000px) rotate(-30deg)";
   removeCard(card);
 }
@@ -73,7 +75,7 @@ function swipeLeft(card) {
 function resetCard(card) {
   card.style.transition = "transform 0.3s ease";
   card.style.transform = "";
-  setTimeout(() => (card.style.transition = ""), 300);
+  setTimeout(() => card.style.transition = "", 300);
 }
 
 function saveLike(card) {
@@ -90,7 +92,7 @@ function removeCard(card) {
     if (currentIndex === TOTAL_CATS) {
       showResult();
     }
-  }, 300);
+  }, 400);
 }
 
 function showResult() {
@@ -104,7 +106,7 @@ function showResult() {
   });
 }
 
-// Load cards
+// Load cards (stacked)
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
