@@ -5,7 +5,7 @@
 body {
   margin: 0;
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(180deg, #fff, #f6f6f6);
+  background: linear-gradient(180deg, #fff0f5, #fde2ea);
   text-align: center;
 }
 
@@ -82,3 +82,4 @@ header p {
   border-radius: 16px;
   margin: 8px;
 }
+
