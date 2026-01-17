@@ -22,12 +22,18 @@ function createCard(index) {
     startX = e.clientX;
     currentX = startX;
     isDragging = true;
+    card.style.transition = "none"; // disable snap while dragging
     card.setPointerCapture(e.pointerId);
   });
 
   card.addEventListener("pointermove", e => {
     if (!isDragging) return;
     currentX = e.clientX;
+    const diff = currentX - startX;
+
+    // Move + rotate card
+    card.style.transform =
+      `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
   });
 
   card.addEventListener("pointerup", e => {
@@ -37,16 +43,28 @@ function createCard(index) {
     handleSwipe(currentX - startX);
   });
 
-  card.addEventListener("pointercancel", () => {
-    isDragging = false;
-  });
+  card.addEventListener("pointercancel", resetCard);
 
   function handleSwipe(diff) {
-    if (diff > 100) {
-      like(card);
-    } else if (diff < -100) {
-      dislike(card);
+    card.style.transition = "transform 0.3s ease";
+
+    if (diff > 120) {
+      // LIKE animation
+      card.style.transform = "translateX(500px) rotate(30deg)";
+      setTimeout(() => like(card), 300);
+    } else if (diff < -120) {
+      // DISLIKE animation
+      card.style.transform = "translateX(-500px) rotate(-30deg)";
+      setTimeout(() => dislike(card), 300);
+    } else {
+      // Snap back
+      resetCard();
     }
+  }
+
+  function resetCard() {
+    card.style.transition = "transform 0.3s ease";
+    card.style.transform = "translateX(0) rotate(0)";
   }
 
   return card;
@@ -90,3 +108,4 @@ function showResult() {
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
+
