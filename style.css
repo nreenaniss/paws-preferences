@@ -139,6 +139,9 @@ header p {
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
   padding: 10px;
+
+  justify-items: center;   /* centers items inside columns */
+  justify-content: center; /* centers the whole grid */
 }
 
 #liked-cats img {
@@ -183,3 +186,4 @@ button:active {
     transform: translateY(0);
   }
 }
+
