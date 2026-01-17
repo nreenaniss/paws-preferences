@@ -12,12 +12,15 @@ function createCard(index) {
   const card = document.createElement("div");
   card.className = "card";
   card.style.backgroundImage =
-    `url(https://cataas.com/cat?width=300&height=400&${Date.now()+index})`;
+    `url(https://cataas.com/cat?width=300&height=400&${Date.now() + index})`;
 
   let startX = 0;
+  let currentX = 0;
   let isDragging = false;
 
-  // TOUCH (MOBILE)
+  /* ======================
+     📱 TOUCH (MOBILE)
+  ====================== */
   card.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
@@ -27,21 +30,32 @@ function createCard(index) {
     handleSwipe(endX - startX);
   });
 
-  // MOUSE (DESKTOP)
+  /* ======================
+     💻 MOUSE (DESKTOP)
+  ====================== */
   card.addEventListener("mousedown", e => {
     startX = e.clientX;
+    currentX = startX;
     isDragging = true;
   });
 
-  card.addEventListener("mouseup", e => {
+  document.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    currentX = e.clientX;
+  });
+
+  document.addEventListener("mouseup", () => {
     if (!isDragging) return;
     isDragging = false;
-    handleSwipe(e.clientX - startX);
+    handleSwipe(currentX - startX);
   });
 
   function handleSwipe(diff) {
-    if (diff > 80) like(card);
-    else if (diff < -80) dislike(card);
+    if (diff > 80) {
+      like(card);
+    } else if (diff < -80) {
+      dislike(card);
+    }
   }
 
   return card;
@@ -85,4 +99,3 @@ function showResult() {
 for (let i = TOTAL_CATS - 1; i >= 0; i--) {
   container.appendChild(createCard(i));
 }
-
