@@ -1,18 +1,20 @@
-/* ===== GLOBAL ===== */
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
+html {
   min-height: 100%;
+}
+
+body {
   margin: 0;
-  padding: 0;
+  padding-bottom: 60px; /* 👈 SPACE AT BOTTOM (IMPORTANT) */
   font-family: "Helvetica Neue", Arial, sans-serif;
   text-align: center;
   color: #333;
 
-  /* Gradient covers entire content */
+  /* Full-page soft pink background */
   background: radial-gradient(circle at top, #ffe8f0 0%, #f6bfd4 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -59,7 +61,6 @@ header p {
   height: 100%;
   width: 0%;
   background: #ff5f96;
-  border-radius: 6px;
   transition: width 0.3s ease;
 }
 
@@ -88,7 +89,7 @@ header p {
   transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
-/* ===== LIKE / NOPE LABELS ===== */
+/* ===== LIKE / NOPE ===== */
 .label {
   position: absolute;
   top: 28px;
@@ -98,7 +99,6 @@ header p {
   font-weight: 800;
   border-radius: 12px;
   opacity: 0;
-  pointer-events: none;
   background: rgba(255,255,255,0.9);
 }
 
@@ -116,15 +116,14 @@ header p {
   transform: rotate(10deg);
 }
 
-/* ===== RESULT SECTION ===== */
+/* ===== RESULT ===== */
 #result {
   animation: fadeIn 0.5s ease;
   padding: 24px 16px;
-  margin: 40px auto;           /* top & bottom space */
+  margin: 40px auto 40px; /* 👈 REAL SPACE */
   max-width: 420px;
-  max-height: 80vh;            /* limit height so it doesn't fill viewport */
-  overflow-y: auto;            /* scroll if needed */
-  background: rgba(255,255,255,0.55);
+
+  background: rgba(255,255,255,0.6);
   border-radius: 26px;
   box-shadow: 0 15px 30px rgba(0,0,0,0.12);
 }
@@ -138,34 +137,26 @@ header p {
   margin-bottom: 12px;
 }
 
-/* ===== LIKED CATS (CENTERED) ===== */
+/* ===== LIKED CATS ===== */
 #liked-cats {
   display: flex;
-  flex-wrap: wrap;               /* wrap if screen too small */
-  justify-content: center;       /* center all items horizontally */
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 16px;
   padding: 10px;
-  max-width: 100%;
-  margin: 0 auto;
 }
 
 #liked-cats img {
   width: 160px;
-  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: 22px;
   box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-  transition: transform 0.2s ease;
-}
-
-#liked-cats img:hover {
-  transform: scale(1.04);
 }
 
 /* ===== BUTTON ===== */
 button {
-  margin-top: 20px;
+  margin-top: 24px;
   padding: 14px 30px;
   border: none;
   border-radius: 30px;
@@ -175,10 +166,6 @@ button {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 12px 25px rgba(255,95,150,0.45);
-}
-
-button:active {
-  transform: scale(0.95);
 }
 
 /* ===== ANIMATION ===== */
