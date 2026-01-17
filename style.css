@@ -116,7 +116,12 @@ header p {
 /* ===== RESULT SECTION ===== */
 #result {
   animation: fadeIn 0.5s ease;
-  padding: 10px 20px 30px;
+  padding: 16px;
+  margin: 0 auto 40px;
+  max-width: 420px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 26px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
 }
 
 .hidden {
@@ -125,26 +130,28 @@ header p {
 
 #result h2 {
   font-size: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-/* ===== LIKED CATS GRID ===== */
+/* ===== LIKED CATS (BIGGER) ===== */
 #liked-cats {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 10px;
 }
 
 #liked-cats img {
-  width: 110px;
-  border-radius: 16px;
-  margin: 8px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 22px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
   transition: transform 0.2s ease;
 }
 
 #liked-cats img:hover {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 /* ===== BUTTON ===== */
