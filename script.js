@@ -1,36 +1,23 @@
-const cats = [
-  "https://placekitten.com/400/600",
-  "https://placekitten.com/401/600",
-  "https://placekitten.com/402/600",
-  "https://placekitten.com/403/600",
-  "https://placekitten.com/404/600",
-  "https://placekitten.com/405/600",
-  "https://placekitten.com/406/600",
-  "https://placekitten.com/407/600",
-  "https://placekitten.com/408/600",
-  "https://placekitten.com/409/600"
-];
-
+const TOTAL_CATS = 10;
 const container = document.getElementById("card-container");
-const progress = document.getElementById("progress");
-const results = document.getElementById("results");
-const likedCatsEl = document.getElementById("liked-cats");
-const restartBtn = document.getElementById("restart");
+const result = document.getElementById("result");
+const likeCount = document.getElementById("like-count");
+const likedCatsDiv = document.getElementById("liked-cats");
+const progressText = document.getElementById("progress-text");
+const progressFill = document.getElementById("progress-fill");
 
-let index = 0;
-let liked = [];
+let currentIndex = 0;
+let likedCats = [];
 
-function updateProgress() {
-  progress.textContent = `${index + 1} / ${cats.length}`;
-}
-
-function createCard(src) {
+// Create card
+function createCard(index) {
   const card = document.createElement("div");
   card.className = "card";
 
-  const img = document.createElement("img");
-  img.src = src;
+  const imgUrl = `https://cataas.com/cat?width=400&height=500&${Date.now()+index}`;
+  card.style.backgroundImage = `url(${imgUrl})`;
 
+  // Like / Nope labels
   const like = document.createElement("div");
   like.className = "label like";
   like.textContent = "LIKE";
@@ -39,88 +26,143 @@ function createCard(src) {
   nope.className = "label nope";
   nope.textContent = "NOPE";
 
-  card.append(img, like, nope);
-  container.appendChild(card);
+  card.appendChild(like);
+  card.appendChild(nope);
 
   let startX = 0;
   let currentX = 0;
+  let dragging = false;
 
-  function start(e) {
-    startX = e.touches ? e.touches[0].clientX : e.clientX;
+  function start(x) {
+    startX = x;
+    dragging = true;
     card.style.transition = "none";
+
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onEnd);
   }
 
-  function move(e) {
-    currentX = (e.touches ? e.touches[0].clientX : e.clientX) - startX;
-    card.style.transform = `translateX(${currentX}px) rotate(${currentX / 10}deg)`;
+  function onMove(e) {
+    if (!dragging) return;
+    currentX = e.clientX - startX;
 
-    like.style.opacity = currentX > 60 ? 1 : 0;
-    nope.style.opacity = currentX < -60 ? 1 : 0;
+    card.style.transform =
+      `translateX(${currentX}px) rotate(${currentX * 0.05}deg)`;
+
+    like.style.opacity = currentX > 0 ? Math.min(currentX / 100, 1) : 0;
+    nope.style.opacity = currentX < 0 ? Math.min(-currentX / 100, 1) : 0;
   }
 
-  function end() {
-    if (currentX > 120) swipe(true);
-    else if (currentX < -120) swipe(false);
-    else reset();
+  function onEnd() {
+    dragging = false;
+
+    document.removeEventListener("mousemove", onMove);
+    document.removeEventListener("mouseup", onEnd);
+
+    card.style.transition = "transform 0.35s ease";
+
+    if (currentX > 120) swipe(card, true, imgUrl);
+    else if (currentX < -120) swipe(card, false);
+    else {
+      card.style.transform = "translateX(0)";
+      like.style.opacity = 0;
+      nope.style.opacity = 0;
+    }
   }
 
-  function swipe(isLike) {
-    card.style.transition = "0.3s";
-    card.style.transform = `translateX(${isLike ? 500 : -500}px) rotate(${isLike ? 20 : -20}deg)`;
+  // Mouse
+  card.addEventListener("mousedown", e => start(e.clientX));
 
-    if (isLike) liked.push(src);
+  // Touch
+  card.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    dragging = true;
+    card.style.transition = "none";
+  });
 
-    setTimeout(() => {
-      container.removeChild(card);
-      index++;
-      next();
-    }, 300);
-  }
+  card.addEventListener("touchmove", e => {
+    if (!dragging) return;
+    currentX = e.touches[0].clientX - startX;
 
-  function reset() {
-    card.style.transition = "0.3s";
-    card.style.transform = "translateX(0)";
-    like.style.opacity = 0;
-    nope.style.opacity = 0;
-  }
+    card.style.transform =
+      `translateX(${currentX}px) rotate(${currentX * 0.05}deg)`;
 
-  card.addEventListener("mousedown", start);
-  card.addEventListener("mousemove", e => startX && move(e));
-  card.addEventListener("mouseup", end);
-  card.addEventListener("mouseleave", () => startX && end());
+    like.style.opacity = currentX > 0 ? Math.min(currentX / 100, 1) : 0;
+    nope.style.opacity = currentX < 0 ? Math.min(-currentX / 100, 1) : 0;
+  });
 
-  card.addEventListener("touchstart", start);
-  card.addEventListener("touchmove", move);
-  card.addEventListener("touchend", end);
+  card.addEventListener("touchend", () => {
+    dragging = false;
+    card.style.transition = "transform 0.35s ease";
+
+    if (currentX > 120) swipe(card, true, imgUrl);
+    else if (currentX < -120) swipe(card, false);
+    else {
+      card.style.transform = "translateX(0)";
+      like.style.opacity = 0;
+      nope.style.opacity = 0;
+    }
+  });
+
+  return card;
 }
 
-function next() {
-  if (index >= cats.length) {
-    container.style.display = "none";
-    progress.style.display = "none";
-    results.style.display = "block";
+// Swipe
+function swipe(card, liked, imgUrl) {
+  card.style.transform =
+    `translateX(${liked ? 600 : -600}px) rotate(${liked ? 20 : -20}deg)`;
+  card.style.opacity = 0;
 
-    likedCatsEl.innerHTML = "";
-    liked.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-      likedCatsEl.appendChild(img);
-    });
-    return;
-  }
+  if (liked) likedCats.push(imgUrl);
 
-  updateProgress();
-  createCard(cats[index]);
+  setTimeout(() => {
+    card.remove();
+    currentIndex++;
+    updateProgress();
+
+    if (currentIndex === TOTAL_CATS) showResult();
+  }, 300);
 }
 
-restartBtn.onclick = () => {
-  index = 0;
-  liked = [];
+// Progress
+function updateProgress() {
+  progressText.textContent =
+    `${Math.min(currentIndex + 1, TOTAL_CATS)} / ${TOTAL_CATS}`;
+  progressFill.style.width =
+    `${(currentIndex / TOTAL_CATS) * 100}%`;
+}
+
+// Results
+function showResult() {
+  container.classList.add("hidden");
+  result.classList.remove("hidden");
+  likeCount.textContent = likedCats.length;
+
+  likedCatsDiv.innerHTML = "";
+  likedCats.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    likedCatsDiv.appendChild(img);
+  });
+}
+
+// Restart
+function restart() {
+  currentIndex = 0;
+  likedCats = [];
   container.innerHTML = "";
-  container.style.display = "block";
-  progress.style.display = "block";
-  results.style.display = "none";
-  next();
-};
+  result.classList.add("hidden");
+  container.classList.remove("hidden");
+  updateProgress();
+  loadCards();
+}
 
-next();
+// Load
+function loadCards() {
+  for (let i = TOTAL_CATS - 1; i >= 0; i--) {
+    container.appendChild(createCard(i));
+  }
+}
+
+updateProgress();
+loadCards();
