@@ -2,32 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Paws & Preferences 🐾</title>
+  <title>Cat Swipe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header>
-  <h1>Paws & Preferences 🐾</h1>
-  <p>Swipe right if you like the cat, left if not</p>
+  <div class="app">
 
-  <div id="progress-text">1 / 10</div>
-  <div id="progress-bar">
-    <div id="progress-fill"></div>
+    <header>
+      <h1>🐾 Pick Your Cat</h1>
+      <div id="progress">1 / 10</div>
+    </header>
+
+    <div id="card-container"></div>
+
+    <div id="results">
+      <h2>Cats You Liked 💖</h2>
+      <div id="liked-cats"></div>
+      <button id="restart">Restart</button>
+    </div>
+
   </div>
-</header>
 
-<main>
-  <div id="card-container"></div>
-
-  <section id="result" class="hidden">
-    <h2>You liked <span id="like-count"></span> cats 💕</h2>
-    <div id="liked-cats"></div>
-    <button onclick="restart()">Restart</button>
-  </section>
-</main>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
